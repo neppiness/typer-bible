@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface VerseRepository {
 
-    void initialize();
+    void save(Verse verse);
     Optional<Verse> findById(int id);
     List<Verse> findByChapter(int chapterNo);
     List<Verse> findByBookName(Book bookName);

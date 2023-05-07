@@ -9,15 +9,12 @@ import java.util.Optional;
 
 public class MemoryVerseRepository implements VerseRepository {
 
-    static final HashMap<Integer, Verse> store = new HashMap<>();
-
-    MemoryVerseRepository() {
-        initialize();
-    }
+    static HashMap<Integer, Verse> store = new HashMap<>();
+    static int sequence = 1;
 
     @Override
-    public void initialize() {
-        // TODO: implement method to get files and save verses to store
+    public void save(Verse verse) {
+        store.put(sequence++, verse);
     }
 
     @Override
