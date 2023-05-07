@@ -6,8 +6,12 @@ import lombok.Setter;
 @Getter @Setter
 public class Verse {
 
-    Long id;
+    Long id; String text;
+
+    /* TO BE UPDATED
     Book bookName;
     int chapterNo, verseNo;
-    String text;
+     */
+
+    public Verse(String text_) { this.text = text_; }
 }
