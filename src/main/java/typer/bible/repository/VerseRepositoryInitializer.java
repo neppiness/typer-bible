@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class VerseRepositoryInitializer {
@@ -20,8 +21,8 @@ public class VerseRepositoryInitializer {
 
     static InputStream inputStream;
     static InputStreamReader inputStreamReader;
-
-    static MemoryVerseRepository memoryVerseRepository = new MemoryVerseRepository();
+    static HashMap<Integer, Verse> store = new HashMap<>();
+    static int sequence = 1;
 
     private static List<String> getBookFilePaths() {
         List<String> bookFilePaths = new ArrayList<>();
@@ -41,8 +42,8 @@ public class VerseRepositoryInitializer {
 
     private static String concatenateBookPath(Book book, String number) {
         if (book.testimony == Testimony.OLD)
-            return oldTestimonyFilePath + number + book.toString() + txtFileExtension;
-        return newTestimonyFilePath + number + book.toString() + txtFileExtension;
+            return oldTestimonyFilePath + number + book + txtFileExtension;
+        return newTestimonyFilePath + number + book + txtFileExtension;
     }
 
     BufferedReader getBufferedReaderForBook(String bookFilePath) {
@@ -56,17 +57,23 @@ public class VerseRepositoryInitializer {
         return new BufferedReader(inputStreamReader);
     }
 
-    void saveVerses(BufferedReader br) throws IOException {
-        while (br.ready()) {
-            memoryVerseRepository.save(new Verse(br.readLine()));
-        }
+    void save(Verse verse) {
+        store.put(sequence++, verse);
     }
 
-    void setVerseStore() throws IOException {
+    void saveVerses(BufferedReader br) throws IOException {
+        while (br.ready()) save(new Verse(br.readLine()));
+    }
+
+    VerseRepositoryInitializer() throws IOException {
         List<String> bookFilePaths = getBookFilePaths();
         for (String bookFilePath : bookFilePaths) {
             BufferedReader br = getBufferedReaderForBook(bookFilePath);
             saveVerses(br);
         }
+    }
+
+    HashMap<Integer, Verse> getStoreInstance() {
+        return store;
     }
 }

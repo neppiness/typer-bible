@@ -3,18 +3,21 @@ package typer.bible.repository;
 import typer.bible.domain.Book;
 import typer.bible.domain.Verse;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 public class MemoryVerseRepository implements VerseRepository {
 
-    static HashMap<Integer, Verse> store = new HashMap<>();
-    static int sequence = 1;
+    static HashMap<Integer, Verse> store;
 
-    @Override
-    public void save(Verse verse) {
-        store.put(sequence++, verse);
+    MemoryVerseRepository() {
+        try {
+            store = new VerseRepositoryInitializer().getStoreInstance();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
