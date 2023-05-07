@@ -4,10 +4,12 @@ import typer.bible.domain.Book;
 import typer.bible.domain.Verse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface VerseRepository {
 
-    Verse findById(int id);
+    void initialize();
+    Optional<Verse> findById(int id);
     List<Verse> findByChapter(int chapterNo);
     List<Verse> findByBookName(Book bookName);
 }
