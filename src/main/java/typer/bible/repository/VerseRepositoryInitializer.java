@@ -72,7 +72,7 @@ public class VerseRepositoryInitializer {
         }
     }
 
-    HashMap<Integer, Verse> getStoreInstance() throws IOException {
+    public static HashMap<Integer, Verse> getStoreInstance() throws IOException {
         if (store == null) {
             store = new HashMap<>();
             new VerseRepositoryInitializer();
