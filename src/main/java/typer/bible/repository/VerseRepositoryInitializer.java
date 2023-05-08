@@ -21,26 +21,22 @@ public class VerseRepositoryInitializer {
 
     static InputStream inputStream;
     static InputStreamReader inputStreamReader;
-    static HashMap<Integer, Verse> store = new HashMap<>();
     static int sequence = 1;
 
-    private static List<String> getBookFilePaths() {
+    final static HashMap<Integer, Verse> store = new HashMap<>();
+
+    static List<String> getBookFilePaths() {
         List<String> bookFilePaths = new ArrayList<>();
         for (Book book : Book.values()) {
-            String number = getNumberStringInFormat(book);
-            String bookFilePath = concatenateBookPath(book, number);
+            String bookFilePath = bookPathResolver(book);
             bookFilePaths.add(bookFilePath);
         }
         return bookFilePaths;
     }
 
-    private static String getNumberStringInFormat(Book book) {
+    static String bookPathResolver(Book book) {
         String number = String.valueOf(book.bookNumber);
         if (number.length() == 1) number = '0' + number;
-        return number;
-    }
-
-    private static String concatenateBookPath(Book book, String number) {
         if (book.testimony == Testimony.OLD)
             return oldTestimonyFilePath + number + book + txtFileExtension;
         return newTestimonyFilePath + number + book + txtFileExtension;
@@ -57,12 +53,9 @@ public class VerseRepositoryInitializer {
         return new BufferedReader(inputStreamReader);
     }
 
-    void save(Verse verse) {
-        store.put(sequence++, verse);
-    }
-
     void saveVerses(BufferedReader br) throws IOException {
-        while (br.ready()) save(new Verse(br.readLine()));
+        while (br.ready())
+            store.put(sequence++, new Verse(br.readLine()));
     }
 
     VerseRepositoryInitializer() throws IOException {
