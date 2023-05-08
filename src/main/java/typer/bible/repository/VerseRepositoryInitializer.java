@@ -1,5 +1,8 @@
 package typer.bible.repository;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import typer.bible.domain.Book;
 import typer.bible.domain.Testimony;
 import typer.bible.domain.Verse;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 public class VerseRepositoryInitializer {
 
     static final String oldTestimonyFilePath = "bible-text/old/";
@@ -42,13 +46,15 @@ public class VerseRepositoryInitializer {
         return newTestimonyFilePath + number + book + txtFileExtension;
     }
 
-    BufferedReader getBufferedReaderForBook(String bookFilePath) {
+    BufferedReader getBufferedReaderForBook(String bookFilePath) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         try {
             inputStream = classLoader.getResourceAsStream(bookFilePath);
             inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Logger logger = LoggerFactory.getLogger(VerseRepositoryInitializer.class);
+            logger.error(e.getMessage());
+            throw new IOException(e);
         }
         return new BufferedReader(inputStreamReader);
     }
