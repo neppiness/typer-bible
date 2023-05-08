@@ -27,7 +27,7 @@ public class VerseRepositoryInitializer {
     static InputStreamReader inputStreamReader;
     static int sequence = 1;
 
-    final static HashMap<Integer, Verse> store = new HashMap<>();
+    static HashMap<Integer, Verse> store;
 
     static List<String> getBookFilePaths() {
         List<String> bookFilePaths = new ArrayList<>();
@@ -64,7 +64,7 @@ public class VerseRepositoryInitializer {
             store.put(sequence++, new Verse(br.readLine()));
     }
 
-    VerseRepositoryInitializer() throws IOException {
+    private VerseRepositoryInitializer() throws IOException {
         List<String> bookFilePaths = getBookFilePaths();
         for (String bookFilePath : bookFilePaths) {
             BufferedReader br = getBufferedReaderForBook(bookFilePath);
@@ -72,7 +72,11 @@ public class VerseRepositoryInitializer {
         }
     }
 
-    HashMap<Integer, Verse> getStoreInstance() {
+    HashMap<Integer, Verse> getStoreInstance() throws IOException {
+        if (store == null) {
+            store = new HashMap<>();
+            new VerseRepositoryInitializer();
+        }
         return store;
     }
 }
