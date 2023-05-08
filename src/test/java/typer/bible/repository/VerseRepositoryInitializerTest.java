@@ -15,7 +15,7 @@ class VerseRepositoryInitializerTest {
 
     @BeforeAll
     static void beforeAll() throws IOException {
-        store = new VerseRepositoryInitializer().getStoreInstance();
+        store = VerseRepositoryInitializer.getStoreInstance();
     }
 
     @Test

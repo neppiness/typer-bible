@@ -15,7 +15,7 @@ public class MemoryVerseRepository implements VerseRepository {
 
     static HashMap<Integer, Verse> store;
 
-    MemoryVerseRepository() {
+    public MemoryVerseRepository() {
         try {
             store = VerseRepositoryInitializer.getStoreInstance();
         } catch (Exception e) {
