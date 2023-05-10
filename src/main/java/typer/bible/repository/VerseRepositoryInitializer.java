@@ -29,6 +29,14 @@ public class VerseRepositoryInitializer {
 
     static HashMap<Integer, Verse> store;
 
+    private VerseRepositoryInitializer() throws IOException {
+        List<String> bookFilePaths = getBookFilePaths();
+        for (String bookFilePath : bookFilePaths) {
+            BufferedReader br = getBufferedReaderForBook(bookFilePath);
+            saveVerses(br);
+        }
+    }
+
     static List<String> getBookFilePaths() {
         List<String> bookFilePaths = new ArrayList<>();
         for (Book book : Book.values()) {
@@ -62,14 +70,6 @@ public class VerseRepositoryInitializer {
     void saveVerses(BufferedReader br) throws IOException {
         while (br.ready())
             store.put(sequence++, new Verse(br.readLine()));
-    }
-
-    private VerseRepositoryInitializer() throws IOException {
-        List<String> bookFilePaths = getBookFilePaths();
-        for (String bookFilePath : bookFilePaths) {
-            BufferedReader br = getBufferedReaderForBook(bookFilePath);
-            saveVerses(br);
-        }
     }
 
     public static HashMap<Integer, Verse> getStoreInstance() throws IOException {
