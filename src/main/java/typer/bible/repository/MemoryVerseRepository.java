@@ -17,7 +17,7 @@ public class MemoryVerseRepository implements VerseRepository {
 
     public MemoryVerseRepository() {
         try {
-            store = VerseRepositoryInitializer.getStoreInstance();
+            if (store == null) store = VerseRepositoryInitializer.getStoreInstance();
         } catch (Exception e) {
             Logger logger = LoggerFactory.getLogger(MemoryVerseRepository.class);
             logger.error(e.getMessage());
