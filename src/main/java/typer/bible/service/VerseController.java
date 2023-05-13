@@ -1,13 +1,13 @@
 package typer.bible.service;
 
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import typer.bible.domain.Book;
+import typer.bible.domain.BookName;
 import typer.bible.repository.MemoryVerseRepository;
 
-@RestController
+@Controller
 public class VerseController {
 
     MemoryVerseRepository memoryVerseRepository = new MemoryVerseRepository();
@@ -19,12 +19,12 @@ public class VerseController {
 
     @GetMapping("/{bookName}/{chapterNo}")
     public String getVersesByBookAndChapterNo(@PathVariable String bookName, @PathVariable int chapterNo) {
-        Book foundBook = Book.GENESIS;
-        for (Book book : Book.values()) {
+        BookName foundBookName = BookName.GENESIS;
+        for (BookName book : BookName.values()) {
             if (!book.toString().equals(bookName.toUpperCase()))
                 continue;
-            foundBook = book;
+            foundBookName = book;
         }
-        return foundBook + ": " + chapterNo + "장";
+        return foundBookName + ": " + chapterNo + "장";
     }
 }

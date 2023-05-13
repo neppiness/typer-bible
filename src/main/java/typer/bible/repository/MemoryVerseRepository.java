@@ -3,7 +3,7 @@ package typer.bible.repository;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import typer.bible.domain.Book;
+import typer.bible.domain.BookName;
 import typer.bible.domain.Verse;
 
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public class MemoryVerseRepository implements VerseRepository {
     }
 
     @Override
-    public List<Verse> findByBookName(Book bookName) {
+    public List<Verse> findByBookName(BookName bookName) {
         // TODO: implement method
         return null;
     }

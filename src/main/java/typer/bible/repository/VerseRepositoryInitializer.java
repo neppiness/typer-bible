@@ -3,7 +3,7 @@ package typer.bible.repository;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import typer.bible.domain.Book;
+import typer.bible.domain.BookName;
 import typer.bible.domain.Testimony;
 import typer.bible.domain.Verse;
 
@@ -39,19 +39,19 @@ public class VerseRepositoryInitializer {
 
     static List<String> getBookFilePaths() {
         List<String> bookFilePaths = new ArrayList<>();
-        for (Book book : Book.values()) {
-            String bookFilePath = bookPathResolver(book);
+        for (BookName bookName : BookName.values()) {
+            String bookFilePath = bookPathResolver(bookName);
             bookFilePaths.add(bookFilePath);
         }
         return bookFilePaths;
     }
 
-    static String bookPathResolver(Book book) {
-        String number = String.valueOf(book.bookNumber);
+    static String bookPathResolver(BookName bookName) {
+        String number = String.valueOf(bookName.bookNumber);
         if (number.length() == 1) number = '0' + number;
-        if (book.testimony == Testimony.OLD)
-            return oldTestimonyFilePath + number + book + txtFileExtension;
-        return newTestimonyFilePath + number + book + txtFileExtension;
+        if (bookName.testimony == Testimony.OLD)
+            return oldTestimonyFilePath + number + bookName + txtFileExtension;
+        return newTestimonyFilePath + number + bookName + txtFileExtension;
     }
 
     BufferedReader getBufferedReaderForBook(String bookFilePath) throws IOException {
