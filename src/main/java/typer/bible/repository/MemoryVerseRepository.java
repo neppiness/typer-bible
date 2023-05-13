@@ -3,18 +3,18 @@ package typer.bible.repository;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import typer.bible.domain.Book;
 import typer.bible.domain.BookName;
-import typer.bible.domain.Verse;
+import typer.bible.domain.Chapter;
 import typer.bible.repository.util.VerseRepositoryInitializer;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 public class MemoryVerseRepository implements VerseRepository {
 
-    static HashMap<Integer, Verse> store;
+    static HashMap<BookName, Book> store; // Newly Updated one
 
     public MemoryVerseRepository() {
         try {
@@ -27,19 +27,27 @@ public class MemoryVerseRepository implements VerseRepository {
     }
 
     @Override
-    public Optional<Verse> findById(int id) {
-        return Optional.ofNullable(store.get(id));
+    public Book findBook(BookName bookName) {
+        return store.get(bookName);
     }
 
     @Override
-    public List<Verse> findByChapter(int chapterNo) {
-        // TODO: implement method
-        return null;
+    public List<String> findBookTexts(BookName bookName) {
+        Book foundBook = findBook(bookName);
+        return foundBook.getAllVerses();
     }
 
     @Override
-    public List<Verse> findByBookName(BookName bookName) {
-        // TODO: implement method
-        return null;
+    public List<String> findChapterTexts(BookName bookName, int chapterNo) {
+        Book foundBook = findBook(bookName);
+        Chapter foundChapter = foundBook.findChapterByNo(chapterNo);
+        return foundBook.getAllVerses();
+    }
+
+    @Override
+    public String findVerseText(BookName bookName, int chapterNo, int verseNo) {
+        Book foundBook = findBook(bookName);
+        Chapter foundChapter = foundBook.findChapterByNo(chapterNo);
+        return foundChapter.findVerseByNo(verseNo).getText();
     }
 }

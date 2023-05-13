@@ -12,9 +12,15 @@ public class Chapter {
         this.noOfVerses = this.verses.size();
     }
 
-    public Verse findByVerseNo(int verseNo) {
+    public Verse findVerseByNo(int verseNo) {
         Verse foundVerse = verses.get(verseNo - 1);
         if (foundVerse == null) foundVerse = verses.get(0);
         return foundVerse;
+    }
+
+    public List<String> getAllVerses() {
+        List<String> returnValue = new ArrayList<>();
+        for (Verse verse : this.verses) returnValue.add(verse.getText());
+        return returnValue;
     }
 }

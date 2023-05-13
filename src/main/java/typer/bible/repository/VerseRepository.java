@@ -1,14 +1,14 @@
 package typer.bible.repository;
 
+import typer.bible.domain.Book;
 import typer.bible.domain.BookName;
-import typer.bible.domain.Verse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface VerseRepository {
 
-    Optional<Verse> findById(int id);
-    List<Verse> findByChapter(int chapterNo);
-    List<Verse> findByBookName(BookName bookName);
+    Book findBook(BookName bookName);
+    List<String> findBookTexts(BookName bookName);
+    List<String> findChapterTexts(BookName bookName, int chapterNo);
+    String findVerseText(BookName bookName, int chapterNo, int verseNo);
 }
