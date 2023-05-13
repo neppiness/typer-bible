@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import typer.bible.domain.BookName;
 import typer.bible.domain.Verse;
+import typer.bible.repository.util.VerseRepositoryInitializer;
 
 import java.util.HashMap;
 import java.util.List;
