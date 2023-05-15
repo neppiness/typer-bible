@@ -6,21 +6,22 @@ import org.slf4j.LoggerFactory;
 import typer.bible.domain.Book;
 import typer.bible.domain.BookName;
 import typer.bible.domain.Chapter;
-import typer.bible.repository.util.VerseRepositoryInitializer;
+import typer.bible.repository.util.BookGenerator;
 
 import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
-public class MemoryVerseRepository implements VerseRepository {
+public class MemoryBibleRepository implements VerseRepository {
 
-    static HashMap<BookName, Book> store; // Newly Updated one
+    final static HashMap<BookName, Book> bible = new HashMap<>();
 
-    public MemoryVerseRepository() {
+    public MemoryBibleRepository() {
         try {
-            if (store == null) store = VerseRepositoryInitializer.getStoreInstance();
+            for (BookName bookName : BookName.values())
+                bible.put(bookName, BookGenerator.getBook(bookName));
         } catch (Exception e) {
-            Logger logger = LoggerFactory.getLogger(MemoryVerseRepository.class);
+            Logger logger = LoggerFactory.getLogger(MemoryBibleRepository.class);
             logger.error(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -28,7 +29,7 @@ public class MemoryVerseRepository implements VerseRepository {
 
     @Override
     public Book findBook(BookName bookName) {
-        return store.get(bookName);
+        return bible.get(bookName);
     }
 
     @Override
