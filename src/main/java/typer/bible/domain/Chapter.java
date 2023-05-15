@@ -7,7 +7,7 @@ public class Chapter {
     List<Verse> verses;
     int noOfVerses;
 
-    Chapter(List<Verse> verses_) {
+    public Chapter(List<Verse> verses_) {
         this.verses = new ArrayList<>(verses_);
         this.noOfVerses = this.verses.size();
     }

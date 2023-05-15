@@ -18,7 +18,7 @@ public class PathResolver {
         return bookFilePaths;
     }
 
-    static String resolvePath(BookName bookName) {
+    public static String resolvePath(BookName bookName) {
         String number = String.valueOf(bookName.bookNumber);
         if (number.length() == 1) number = '0' + number;
         if (bookName.testimony == Testimony.OLD)
