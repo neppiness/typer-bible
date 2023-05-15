@@ -13,7 +13,7 @@ import java.util.List;
 public class BookGenerator {
 
     public static Book getBook(BookName bookName) throws IOException {
-        String bookFilePath = PathResolver.resolvePath(bookName);
+        String bookFilePath = PathResolver.getPath(bookName);
         BufferedReader br = TextReader.get(bookFilePath);
         List<String> rawTexts = getRawTexts(br);
         List<Verse> allChapterVerses = VerseCollector.getVerses(rawTexts);

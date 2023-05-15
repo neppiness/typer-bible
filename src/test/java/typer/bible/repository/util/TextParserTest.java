@@ -51,7 +51,7 @@ class TextParserTest {
     @Test
     void allBibleTextsParsingTest() throws IOException {
         for (BookName bookName : BookName.values()) {
-            String bookFilePath = PathResolver.resolvePath(bookName);
+            String bookFilePath = PathResolver.getPath(bookName);
             BufferedReader br = TextReader.get(bookFilePath);
             rawTexts.addAll(getRawTexts(br));
         }
