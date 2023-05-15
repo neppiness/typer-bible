@@ -22,22 +22,20 @@ public class TextParser {
 
     TextParser(String rawInput_) {
         this.rawInput = rawInput_;
+        initMatcher();
+        initBookName();
+        initChapterAndVerseNumbers();
+        initText();
+    }
+
+    private void initMatcher() {
         this.matcher = noPattern.matcher(this.rawInput);
         boolean isNoPatternFound = this.matcher.find();
         if (!isNoPatternFound) {
             this.matcher = altPattern.matcher(this.rawInput);
             if (!this.matcher.find())
                 throw new IllegalArgumentException("파싱할 수 없는 구문입니다:" + this.rawInput);
-            System.out.println(rawInput_); // 부가 패턴에 걸리는 구문 확인
         }
-        init(isNoPatternFound);
-    }
-
-    private void init(boolean isNoPatternFound) {
-        initBookName();
-        initText();
-        if (isNoPatternFound) { initChapterAndVerseNumbers(); return; }
-        initChapterNo();
     }
 
     private void initBookName() {
@@ -49,13 +47,9 @@ public class TextParser {
         String numbers = this.rawInput.substring(matcher.start(), matcher.end());
         String[] splitNumbers = numbers.split(colon);
         this.chapterNo = Integer.parseInt(splitNumbers[0]);
-        this.verseNo = Integer.parseInt(splitNumbers[1]);
-    }
-
-    private void initChapterNo() {
-        String numbers = this.rawInput.substring(matcher.start(), matcher.end());
-        String[] splitNumbers = numbers.split(colon);
-        this.chapterNo = Integer.parseInt(splitNumbers[0]);
+        if (splitNumbers.length == 2) {
+            this.verseNo = Integer.parseInt(splitNumbers[1]);
+        }
     }
 
     private void initText() {
