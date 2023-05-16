@@ -2,7 +2,6 @@ package typer.bible.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import typer.bible.repository.util.BookNameResolver;
 
 @Getter @Setter
 public class Verse {
