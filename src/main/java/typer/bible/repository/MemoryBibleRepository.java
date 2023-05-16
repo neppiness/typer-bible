@@ -43,7 +43,7 @@ public class MemoryBibleRepository implements VerseRepository {
     public List<String> findChapterTexts(BookName bookName, int chapterNo) {
         Book foundBook = findBook(bookName);
         Chapter foundChapter = foundBook.findChapterByNo(chapterNo);
-        return foundBook.getAllVerseTexts();
+        return foundChapter.getAllVerseTexts();
     }
 
     @Override
