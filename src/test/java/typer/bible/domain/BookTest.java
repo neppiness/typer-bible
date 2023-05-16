@@ -45,8 +45,8 @@ class BookTest {
     }
 
     @Test
-    void getAllVersesTest() {
-        List<String> allVersesInBook = book.getAllVerses();
+    void getAllVerseTextsTest() {
+        List<String> allVersesInBook = book.getAllVerseTexts();
         for (int idx = 0; idx < 3; idx++) {
             String text = allVersesInBook.get(idx);
             assertThat(text).isEqualTo(genesisFirstThreeChapterFirstVerses.get(idx));

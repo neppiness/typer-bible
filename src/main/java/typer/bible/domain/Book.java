@@ -6,7 +6,7 @@ import java.util.List;
 public class Book {
     BookName bookName;
     List<Chapter> chapters;
-    int noOfChapters;
+    public int noOfChapters;
 
     public Book(BookName bookName_, List<Chapter> chapters_) {
         this.bookName = bookName_;
@@ -20,9 +20,10 @@ public class Book {
         return foundChapter;
     }
 
-    public List<String> getAllVerses() {
+    public List<String> getAllVerseTexts() {
         List<String> returnValue = new ArrayList<>();
-        for (Chapter chapter : this.chapters) returnValue.addAll(chapter.getAllVerses());
+        for (Chapter chapter : this.chapters)
+            returnValue.addAll(chapter.getAllVerseTexts());
         return returnValue;
     }
 }

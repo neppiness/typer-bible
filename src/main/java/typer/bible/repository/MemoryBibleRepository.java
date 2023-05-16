@@ -8,6 +8,7 @@ import typer.bible.domain.BookName;
 import typer.bible.domain.Chapter;
 import typer.bible.repository.util.BookGenerator;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class MemoryBibleRepository implements VerseRepository {
         try {
             for (BookName bookName : BookName.values())
                 bible.put(bookName, BookGenerator.getBook(bookName));
-        } catch (Exception e) {
+        } catch (IOException e) {
             Logger logger = LoggerFactory.getLogger(MemoryBibleRepository.class);
             logger.error(e.getMessage());
             throw new RuntimeException(e);
@@ -35,14 +36,14 @@ public class MemoryBibleRepository implements VerseRepository {
     @Override
     public List<String> findBookTexts(BookName bookName) {
         Book foundBook = findBook(bookName);
-        return foundBook.getAllVerses();
+        return foundBook.getAllVerseTexts();
     }
 
     @Override
     public List<String> findChapterTexts(BookName bookName, int chapterNo) {
         Book foundBook = findBook(bookName);
         Chapter foundChapter = foundBook.findChapterByNo(chapterNo);
-        return foundBook.getAllVerses();
+        return foundBook.getAllVerseTexts();
     }
 
     @Override

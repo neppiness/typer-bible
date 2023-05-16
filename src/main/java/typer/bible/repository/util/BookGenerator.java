@@ -41,6 +41,7 @@ public class BookGenerator {
             }
             verses.add(verse);
         }
+        returnValue.add(new Chapter(verses));
         return returnValue;
     }
 }

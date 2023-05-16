@@ -36,8 +36,8 @@ class ChapterTest {
     }
 
     @Test
-    void getAllVersesTest() {
-        List<String> foundTexts = chapter.getAllVerses();
+    void getAllVerseTextsTest() {
+        List<String> foundTexts = chapter.getAllVerseTexts();
         for (int i = 0; i < 3; i++) {
             String foundText = foundTexts.get(i);
             String genesisText = genesisFirstThreeVerses.get(i);

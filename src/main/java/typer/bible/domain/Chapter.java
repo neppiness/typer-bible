@@ -18,7 +18,7 @@ public class Chapter {
         return foundVerse;
     }
 
-    public List<String> getAllVerses() {
+    public List<String> getAllVerseTexts() {
         List<String> returnValue = new ArrayList<>();
         for (Verse verse : this.verses) returnValue.add(verse.getText());
         return returnValue;
