@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+ .container {
+ max-width: 800px;
+ }
+ </style>
+</head>
+<body>
+<div class="container">
+  <div class="py-5 text-center">
+    <h1>TYPER-BIBLE</h1>
+  </div>
+
+  <div th:each="verse : ${verses}">
+    <h5 class="mb-3" th:text="${verse.chapterNo} + '장 ' + ${verse.verseNo} + '절'">1장 1절</h5>
+    <h6 class="mb-3" th:text="${verse.text}">성경 구절 내용</h6>
+    <form action="item.html" method="post">
+      <div>
+        <input type="text" id="verseText" name="verseText" class="form-control" placeholder="상단에 보이는 구절을 입력하세요">
+      </div>
+      <hr class="my-4">
+    </form>
+  </div>
+
+</div> <!-- /container -->
+</body>
+</html>
