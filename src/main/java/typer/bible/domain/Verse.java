@@ -1,15 +1,13 @@
 package typer.bible.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter @Setter
+@Getter
 public class Verse {
 
-    Long id;
-    BookName bookName;
-    int chapterNo, verseNo;
-    String text;
+    final BookName bookName;
+    final int chapterNo, verseNo;
+    final String text;
 
     public Verse(BookName bookName, int chapterNo, int verseNo, String text) {
         this.bookName = bookName;

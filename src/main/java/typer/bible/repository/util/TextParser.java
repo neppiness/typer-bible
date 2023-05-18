@@ -1,12 +1,13 @@
 package typer.bible.repository.util;
 
-import lombok.Getter;
 import typer.bible.domain.BookName;
+import typer.bible.domain.Verse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Getter
 public class TextParser {
 
     private BookName bookName;
@@ -16,11 +17,11 @@ public class TextParser {
     private final String rawInput;
     private Matcher matcher;
 
-    static Pattern noPattern = Pattern.compile("([0-9]+:[0-9]+)");
+    static Pattern normalPattern = Pattern.compile("([0-9]+:[0-9]+)");
     static Pattern altPattern = Pattern.compile("([0-9]+:)");
     static String colon = ":";
 
-    TextParser(String rawInput_) {
+    private TextParser(String rawInput_) {
         this.rawInput = rawInput_;
         initMatcher();
         initBookName();
@@ -28,14 +29,31 @@ public class TextParser {
         initText();
     }
 
-    private void initMatcher() {
-        this.matcher = noPattern.matcher(this.rawInput);
-        boolean isNoPatternFound = this.matcher.find();
-        if (!isNoPatternFound) {
-            this.matcher = altPattern.matcher(this.rawInput);
-            if (!this.matcher.find())
-                throw new IllegalArgumentException("파싱할 수 없는 구문입니다:" + this.rawInput);
+    public static List<Verse> convertToVerses(List<String> rawTexts) {
+        List<Verse> verses = new ArrayList<>();
+        for (String rawText : rawTexts) {
+            TextParser parsedText = new TextParser(rawText);
+            Verse verse = new Verse(
+                    parsedText.bookName, parsedText.chapterNo,
+                    parsedText.verseNo, parsedText.text
+            );
+            verses.add(verse);
         }
+        return verses;
+    }
+
+    private void initMatcher() {
+        this.matcher = normalPattern.matcher(this.rawInput);
+        boolean isNormalPatternFound = this.matcher.find();
+        if (isNormalPatternFound && isValidStartIndex()) return;
+
+        this.matcher = altPattern.matcher(this.rawInput);
+        if (this.matcher.find() && isValidStartIndex()) return;
+        throw new IllegalArgumentException("파싱할 수 없는 구문입니다: " + this.rawInput);
+    }
+
+    private boolean isValidStartIndex() {
+        return (this.matcher.start() == 1 || this.matcher.start() == 2);
     }
 
     private void initBookName() {
