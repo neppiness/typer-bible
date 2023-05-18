@@ -3,10 +3,8 @@ package typer.bible.repository.util;
 import org.junit.jupiter.api.Test;
 import typer.bible.domain.Book;
 import typer.bible.domain.BookName;
+import typer.bible.domain.Verse;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -17,52 +15,64 @@ import static org.assertj.core.api.Assertions.*;
 class TextParserTest {
 
     final static HashMap<BookName, Book> bible = new HashMap<>();
-    static List<String> rawTexts = new ArrayList<>();
+
+    static String normalPatternInput
+            = "창29:24 라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라";
+    static String altPatternInput
+            = "삼하2:어떤 사람이 다윗에게 말하여 이르되 사울을 장사한 사람은 길르앗 야베스 사람들이니이다 하매";
+    static String problematicInput
+            = "눅23:계명을 <살아나시다(마 28:1-10; 막 16:1-8; 요 20:1-10)> 따라 안식일에 쉬더라";
+    static String invalidInput
+            = "창세기29:12 그에게 자기가 그의 아버지의 생질이요 리브가의 아들 됨을 말하였더니 라헬이 달려가서 그 아버지에게 알리매";
+
+    static Pattern normalPattern = Pattern.compile("([0-9]+:[0-9]+)");
+    static Pattern altPattern = Pattern.compile("([0-9]+:)");
 
     @Test
-    void textParserFieldTest() {
-        String testInput = "창29:24 라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라";
-        TextParser textParser = new TextParser(testInput);
-        assertThat(textParser.getBookName()).isEqualTo(BookName.GENESIS);
-        assertThat(textParser.getChapterNo()).isEqualTo(29);
-        assertThat(textParser.getVerseNo()).isEqualTo(24);
-        assertThat(textParser.getText()).isEqualTo("라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라");
-    }
-
-    @Test
-    void regexAltPatternMatchTest() {
-        String testInput = "삼하2:어떤 사람이 다윗에게 말하여 이르되 사울을 장사한 사람은 길르앗 야베스 사람들이니이다 하매";
-        Pattern altPattern = Pattern.compile("([0-9]+:)");
-        Matcher matcher = altPattern.matcher(testInput);
+    void regexNormalPatternMatchTest() {
+        Matcher matcher = normalPattern.matcher(normalPatternInput);
         assertThat(matcher.find()).isTrue();
     }
 
     @Test
-    void textParserAltPatternFieldTest() {
-        String testInput = "삼하2:어떤 사람이 다윗에게 말하여 이르되 사울을 장사한 사람은 길르앗 야베스 사람들이니이다 하매";
-        TextParser textParser = new TextParser(testInput);
-        assertThat(textParser.getBookName()).isEqualTo(BookName.SAMUEL2);
-        assertThat(textParser.getChapterNo()).isEqualTo(2);
-        assertThat(textParser.getVerseNo()).isEqualTo(0);
-        assertThat(textParser.getText()).isEqualTo("어떤 사람이 다윗에게 말하여 이르되 사울을 장사한 사람은 "
+    void regexAltPatternMatchTest() {
+        Matcher matcher = altPattern.matcher(altPatternInput);
+        assertThat(matcher.find()).isTrue();
+    }
+
+    @Test
+    void setNormalPatternInputConversionTest() {
+        Verse verse = TextParser.convertToVerses(List.of(normalPatternInput)).get(0);
+        assertThat(verse.getBookName()).isEqualTo(BookName.GENESIS);
+        assertThat(verse.getChapterNo()).isEqualTo(29);
+        assertThat(verse.getVerseNo()).isEqualTo(24);
+        assertThat(verse.getText()).isEqualTo("라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라");
+    }
+
+    @Test
+    void altPatternInputConversionTest() {
+        Verse verse = TextParser.convertToVerses(List.of(altPatternInput)).get(0);
+        assertThat(verse.getBookName()).isEqualTo(BookName.SAMUEL2);
+        assertThat(verse.getChapterNo()).isEqualTo(2);
+        assertThat(verse.getVerseNo()).isEqualTo(0);
+        assertThat(verse.getText()).isEqualTo("어떤 사람이 다윗에게 말하여 이르되 사울을 장사한 사람은 "
                 + "길르앗 야베스 사람들이니이다 하매");
     }
 
     @Test
-    void allBibleTextsParsingTest() throws IOException {
-        for (BookName bookName : BookName.values()) {
-            String bookFilePath = PathResolver.getPath(bookName);
-            BufferedReader br = TextReader.get(bookFilePath);
-            rawTexts.addAll(getRawTexts(br));
-        }
-        for (String rawText : rawTexts) {
-            new TextParser(rawText);
-        }
+    void problematicInputConversionTest() {
+        List<Verse> verses = TextParser.convertToVerses(List.of(problematicInput));
+        Verse verse = verses.get(0);
+        assertThat(verse.getBookName()).isEqualTo(BookName.LUKE);
+        assertThat(verse.getChapterNo()).isEqualTo(23);
+        assertThat(verse.getVerseNo()).isEqualTo(0);
+        assertThat(verse.getText()).isEqualTo("계명을 <살아나시다(마 28:1-10; 막 16:1-8; 요 20:1-10)> " +
+                "따라 안식일에 쉬더라");
     }
 
-    private static List<String> getRawTexts(BufferedReader br) throws IOException {
-        List<String> rawTexts = new ArrayList<>();
-        while (br.ready()) rawTexts.add(br.readLine());
-        return rawTexts;
+    @Test
+    void invalidInputConversionTest() {
+        assertThatThrownBy(() -> TextParser.convertToVerses(List.of(invalidInput)))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

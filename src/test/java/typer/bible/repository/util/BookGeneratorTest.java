@@ -53,14 +53,13 @@ class BookGeneratorTest {
 
     @Test
     void getBookTest() throws IOException {
-        List<Verse> versesFromTest = VerseCollector.getVerses(obadiahRawTexts);
+        List<Verse> versesFromTest = TextParser.convertToVerses(obadiahRawTexts);
         Book Obadiah = BookGenerator.getBook(BookName.OBADIAH);
-        List<String> textsFromBookGenerator = Obadiah.getAllVerseTexts();
+        List<Verse> textsFromBookGenerator = Obadiah.getAllVerses();
         int idx = 0;
         for (Verse verse : versesFromTest) {
             System.out.println(verse.toString());
-            assertThat(verse.getText())
-                    .isEqualTo(textsFromBookGenerator.get(idx++));
+            assertThat(verse.getText()).isEqualTo(textsFromBookGenerator.get(idx++).getText());
         }
     }
 }
