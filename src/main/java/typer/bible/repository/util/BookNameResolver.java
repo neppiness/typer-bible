@@ -1,7 +1,6 @@
 package typer.bible.repository.util;
 
 import typer.bible.domain.BookName;
-
 import java.util.HashMap;
 
 public class BookNameResolver {

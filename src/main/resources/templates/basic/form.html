@@ -13,11 +13,11 @@
 <body>
 <div class="container">
   <div class="py-5 text-center">
-    <h1>TYPER-BIBLE</h1>
+    <h1>TYPER-BIBLE </h1>
   </div>
 
   <div th:each="verse : ${verses}">
-    <h5 class="mb-3" th:text="${verse.chapterNo} + '장 ' + ${verse.verseNo} + '절'">1장 1절</h5>
+    <h5 class="mb-3" th:text="${verse.bookName.inKorean} + ' ' + ${verse.chapterNo} + '장 ' + ${verse.verseNo} + '절'">00장 00절</h5>
     <h6 class="mb-3" th:text="${verse.text}">성경 구절 내용</h6>
     <form action="item.html" method="post">
       <div>
@@ -26,7 +26,14 @@
       <hr class="my-4">
     </form>
   </div>
-
+  <div class="row">
+    <div class="col">
+      <button class="w-100 btn btn-secondary btn-lg" type="submit">이전으로</button>
+    </div>
+    <div class="col">
+      <button class="w-100 btn btn-primary btn-lg" onclick="" type="submit">다음으로</button>
+    </div>
+  </div>
 </div> <!-- /container -->
 </body>
 </html>
