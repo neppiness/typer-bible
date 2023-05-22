@@ -46,6 +46,11 @@ public class MemoryBibleRepository implements VerseRepository {
         return book.find(chapterNo, verseNo);
     }
 
+    public static HashMap<BookName, Book> getBibleInstance() {
+        if (bible.isEmpty()) new MemoryBibleRepository();
+        return bible;
+    }
+
     private Book getBook(BookName bookName) {
         return bible.get(bookName);
     }
