@@ -15,7 +15,7 @@ public class Book {
     }
 
     public int getNoOfChapters() {
-        return noOfChapters;
+        return this.noOfChapters;
     }
 
     public List<Verse> find(int chapterNo) {

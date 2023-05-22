@@ -1,6 +1,6 @@
 package typer.bible.domain;
 
-public enum BookName {
+public enum BookInfo {
     // Old Testimony Books #1 - #10
     GENESIS(Testimony.OLD, 1, "창세기"), EXODUS(Testimony.OLD, 2, "출애굽기"),
     LEVITICUS(Testimony.OLD, 3, "레위기"), NUMBERS(Testimony.OLD, 4, "민수기"),
@@ -53,7 +53,7 @@ public enum BookName {
     final public int bookNumber;
     final public String inKorean;
 
-    BookName(Testimony testimony_, int bookNumber_, String inKorean_) {
+    BookInfo(Testimony testimony_, int bookNumber_, String inKorean_) {
         this.testimony = testimony_;
         this.bookNumber = bookNumber_;
         this.inKorean = inKorean_;
