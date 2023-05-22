@@ -17,7 +17,15 @@
   </div>
 
   <div th:each="verse : ${verses}">
-    <h5 class="mb-3" th:text="${verse.bookName.inKorean} + ' ' + ${verse.chapterNo} + '장 ' + ${verse.verseNo} + '절'">00장 00절</h5>
+
+    <h5 class="mb-3" th:if="${verse.verseNo == 0}"
+        th:text="${verse.bookName.inKorean} + ' ' + ${verse.chapterNo} + ${verse.chapterUnit}">
+      00장(편) 형태 출력(절 번호가 0인 경우) </h5>
+
+    <h5 class="mb-3" th:unless="${verse.verseNo == 0}"
+        th:text="${verse.bookName.inKorean} + ' ' + ${verse.chapterNo} + ${verse.chapterUnit} + ' ' + ${verse.verseNo} + '절'">
+      00장(편) 형태 출력(절 번호가 0이 아닌 경우) </h5>
+
     <h6 class="mb-3" th:text="${verse.text}">성경 구절 내용</h6>
     <form action="item.html" method="post">
       <div>
