@@ -36,10 +36,12 @@
   </div>
   <div class="row">
     <div class="col">
-      <button class="w-100 btn btn-secondary btn-lg" type="submit">이전으로</button>
+      <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='typing.html'"
+              th:onclick="|location.href='@{/{prevUrl}(prevUrl=${prevUrl})}'|" type="button">이전으로</button>
     </div>
     <div class="col">
-      <button class="w-100 btn btn-primary btn-lg" onclick="" type="submit">다음으로</button>
+      <button class="w-100 btn btn-primary btn-lg" onclick="location.href='typing.html'"
+              th:onclick="|location.href='@{/{nextUrl}(nextUrl=${nextUrl})}'|" type="button">다음으로</button>
     </div>
   </div>
 </div> <!-- /container -->

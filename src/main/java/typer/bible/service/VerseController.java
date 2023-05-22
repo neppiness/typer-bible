@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import typer.bible.domain.BookName;
 import typer.bible.domain.Verse;
 import typer.bible.repository.MemoryBibleRepository;
+import typer.bible.service.util.UrlResolver;
 
 import java.util.List;
 
@@ -22,7 +23,9 @@ public class VerseController {
         BookName foundBookName = findBookName(bookName);
         List<Verse> verses = memoryBibleRepository.getVerses(foundBookName);
         model.addAttribute("verses", verses);
-        return "basic/form";
+        model.addAttribute("prevUrl", UrlResolver.getPrevUrl(foundBookName));
+        model.addAttribute("nextUrl", UrlResolver.getNextUrl(foundBookName));
+        return "basic/typing";
     }
 
     @GetMapping("/{bookName}/{chapterNo}")
@@ -33,19 +36,9 @@ public class VerseController {
         BookName foundBookName = findBookName(bookName);
         List<Verse> verses = memoryBibleRepository.getVerses(foundBookName, chapterNo);
         model.addAttribute("verses", verses);
-        return "basic/form";
-    }
-
-    @GetMapping("/{bookName}/{chapterNo}/{verseNo}")
-    public String getVerseById(
-            @PathVariable String bookName,
-            @PathVariable int chapterNo,
-            @PathVariable int verseNo,
-            Model model) {
-        BookName foundBookName = findBookName(bookName);
-        List<Verse> verses = memoryBibleRepository.getVerses(foundBookName, chapterNo, verseNo);
-        model.addAttribute("verses", verses);
-        return "basic/form";
+        model.addAttribute("prevUrl", UrlResolver.getPrevUrl(foundBookName, chapterNo));
+        model.addAttribute("nextUrl", UrlResolver.getNextUrl(foundBookName, chapterNo));
+        return "basic/typing";
     }
 
     private BookName findBookName(String bookNameInString) {
