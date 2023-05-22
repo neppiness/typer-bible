@@ -9,14 +9,14 @@ public class BookOrder {
     static HashMap<BookName, BookName> prevOrder;
     static HashMap<BookName, BookName> nextOrder;
 
-    public static HashMap<BookName, BookName> getPrevOrder() {
+    public static BookName getPrevBookName(BookName bookName) {
         if (prevOrder == null) initPrevOrder();
-        return prevOrder;
+        return prevOrder.get(bookName);
     }
 
-    public static HashMap<BookName, BookName> getNextOrder() {
+    public static BookName getNextBookName(BookName bookName) {
         if (nextOrder == null) initNextOrder();
-        return nextOrder;
+        return nextOrder.get(bookName);
     }
 
     private static void initPrevOrder() {
