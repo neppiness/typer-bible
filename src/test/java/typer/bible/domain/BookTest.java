@@ -56,7 +56,6 @@ class BookTest {
             assertThat(verseOfFoundChapter.getChapterNo()).isEqualTo(chapterNos.get(index));
             assertThat(verseOfFoundChapter.getVerseNo()).isEqualTo(verseNos.get(index));
             assertThat(verseOfFoundChapter.getText()).isEqualTo(texts.get(index));
-
         }
     }
 
