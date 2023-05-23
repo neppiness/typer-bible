@@ -21,7 +21,9 @@ public class VerseController {
     @GetMapping("/{bookName}")
     public String getVersesByBookName(@PathVariable String bookName, Model model) {
         BookName foundBookName = findBookName(bookName);
+        if (foundBookName == null) foundBookName = BookName.GENESIS;
         List<Verse> verses = memoryBibleRepository.getVerses(foundBookName);
+        model.addAttribute("bookName", foundBookName.inKorean);
         model.addAttribute("verses", verses);
         model.addAttribute("prevUrl", UrlResolver.getPrevUrl(foundBookName));
         model.addAttribute("nextUrl", UrlResolver.getNextUrl(foundBookName));
@@ -34,7 +36,9 @@ public class VerseController {
             @PathVariable int chapterNo,
             Model model) {
         BookName foundBookName = findBookName(bookName);
+        if (foundBookName == null) foundBookName = BookName.GENESIS;
         List<Verse> verses = memoryBibleRepository.getVerses(foundBookName, chapterNo);
+        model.addAttribute("bookName", foundBookName.inKorean);
         model.addAttribute("verses", verses);
         model.addAttribute("prevUrl", UrlResolver.getPrevUrl(foundBookName, chapterNo));
         model.addAttribute("nextUrl", UrlResolver.getNextUrl(foundBookName, chapterNo));

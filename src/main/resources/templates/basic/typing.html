@@ -16,23 +16,15 @@
     <h1> <a href="../../static/index.html" th:href="@{/}"
             style="text-decoration:inherit;color:inherit"> TYPER-BIBLE </a> </h1>
   </div>
-
-  <div th:each="verse : ${verses}" style="width:800px">
-
-    <h5 class="mb-3" th:if="${verse.verseNo == 0}"
-        th:text="${verse.bookName.inKorean} + ' ' + ${verse.chapterNo} + ${verse.chapterUnit}">
-      00장(편) 형태 출력(절 번호가 0인 경우) </h5>
-
-    <h5 class="mb-3" th:unless="${verse.verseNo == 0}"
-        th:text="${verse.bookName.inKorean} + ' ' + ${verse.chapterNo} + ${verse.chapterUnit} + ' ' + ${verse.verseNo} + '절'">
-      00장(편) 형태 출력(절 번호가 0이 아닌 경우) </h5>
-
+  <h4 class="mb-3" th:text="${bookName}"> 경 출력 </h4>
+  <div th:each="verse:${verses}" style="width:800px">
     <form action="item.html" method="post">
-      <div class="mb-2">
+      <div th:each="verseText:${verse.texts}" class="mb-2">
         <input id="verseTextLabel" name="verseTextLabel" class="form-control"
-                  placeholder="성경 구절 내용" th:placeholder="${verse.text}"
+                  placeholder="성경 구절 내용" th:placeholder="${verseText}"
                   style="background-color:white;border:none" disabled>
-        <input type="text" id="verseText" name="verseText" class="form-control" placeholder="상단에 보이는 구절을 입력하세요">
+        <input type="text" id="inputText" name="inputText" class="form-control"
+               th:placeholder="${verse.verseId}" placeholder="상단에 보이는 구절을 입력하세요">
       </div>
       <hr class="my-4">
     </form>

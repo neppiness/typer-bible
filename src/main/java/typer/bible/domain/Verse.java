@@ -2,28 +2,41 @@ package typer.bible.domain;
 
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class Verse {
 
+    final static StringBuilder sb = new StringBuilder();
+
     final BookName bookName;
     final int chapterNo, verseNo;
-    final String text;
-    final String chapterUnit;
+    final List<String> texts;
+    final String verseId;
 
-    public Verse(BookName bookName, int chapterNo, int verseNo, String text) {
+    public Verse(BookName bookName, int chapterNo, int verseNo, List<String> texts) {
         this.bookName = bookName;
         this.chapterNo = chapterNo;
         this.verseNo = verseNo;
-        this.text = text;
-        if (bookName == BookName.PSALMS) this.chapterUnit = "편";
-        else this.chapterUnit = "장";
+        this.texts = texts;
+        this.verseId = setVerseId();
+    }
+
+    private String setVerseId() {
+        sb.setLength(0);
+        String chapterUnit = "장";
+        if (bookName == BookName.PSALMS) chapterUnit = "편";
+        sb.append(this.chapterNo).append(chapterUnit);
+        if (verseNo != 0) sb.append(' ').append(this.verseNo).append("절");
+        return sb.toString();
     }
 
     @Override
     public String toString() {
-        return this.bookName.inKorean + " "
-                + this.chapterNo + this.chapterUnit + " "
-                + this.verseNo + "절: "
-                + this.text;
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.bookName.inKorean).append(' ')
+                .append(this.verseId).append(": ");
+        for (String text : texts) sb.append(text);
+        return sb.toString();
     }
 }

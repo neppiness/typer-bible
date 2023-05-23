@@ -21,11 +21,12 @@ class BookTest {
             "창3:1 <사람의 불순종과 하나님의 심판 선언> 그런데 뱀은 여호와 하나님이 지으신 들짐승 중에 가장 간교하니라 "
                     + "뱀이 여자에게 물어 이르되 하나님이 참으로 너희에게 동산 모든 나무의 열매를 먹지 말라 하시더냐"
     );
-    static List<String> texts = List.of(
-            "<천지 창조> 태초에 하나님이 천지를 창조하시니라",
-            "천지와 만물이 다 이루어지니라",
-            "<사람의 불순종과 하나님의 심판 선언> 그런데 뱀은 여호와 하나님이 지으신 들짐승 중에 가장 간교하니라 "
-                    + "뱀이 여자에게 물어 이르되 하나님이 참으로 너희에게 동산 모든 나무의 열매를 먹지 말라 하시더냐"
+    static List<List<String>> texts = List.of(
+            List.of("<천지 창조> 태초에 하나님이 천지를 창조하시니라"),
+            List.of("천지와 만물이 다 이루어지니라"),
+            List.of("<사람의 불순종과 하나님의 심판 선언> 그런데 뱀은 여호와 하나님이 지으신 들짐승 중에 가장",
+                    "간교하니라 뱀이 여자에게 물어 이르되 하나님이 참으로 너희에게 동산 모든 나무의 열매를 먹지 말라",
+                    "하시더냐")
     );
 
     static List<List<Verse>> chapters;
@@ -55,7 +56,7 @@ class BookTest {
             assertThat(verseOfFoundChapter.getBookName()).isEqualTo(bookNames.get(index));
             assertThat(verseOfFoundChapter.getChapterNo()).isEqualTo(chapterNos.get(index));
             assertThat(verseOfFoundChapter.getVerseNo()).isEqualTo(verseNos.get(index));
-            assertThat(verseOfFoundChapter.getText()).isEqualTo(texts.get(index));
+            assertThat(verseOfFoundChapter.getTexts()).isEqualTo(texts.get(index));
         }
     }
 
@@ -67,7 +68,7 @@ class BookTest {
             assertThat(verseOfFoundChapter.getBookName()).isEqualTo(bookNames.get(index));
             assertThat(verseOfFoundChapter.getChapterNo()).isEqualTo(chapterNos.get(index));
             assertThat(verseOfFoundChapter.getVerseNo()).isEqualTo(verseNos.get(index));
-            assertThat(verseOfFoundChapter.getText()).isEqualTo(texts.get(index));
+            assertThat(verseOfFoundChapter.getTexts()).isEqualTo(texts.get(index));
         }
     }
 
@@ -76,7 +77,7 @@ class BookTest {
         List<Verse> allVerses = book.getAllVerses();
         for (int index = 0; index < 3; index++) {
             Verse verse = allVerses.get(index);
-            assertThat(verse.getText()).isEqualTo(texts.get(index));
+            assertThat(verse.getTexts()).isEqualTo(texts.get(index));
         }
     }
 }

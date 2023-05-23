@@ -5,14 +5,17 @@ import typer.bible.domain.Verse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextParser {
 
+    public final static int characterNoLimit = 54;
+
     private BookName bookName;
     private int chapterNo, verseNo = 0;
-    private String text;
+    private final List<String> texts = new ArrayList<>();
 
     private final String rawInput;
     private Matcher matcher;
@@ -26,7 +29,7 @@ public class TextParser {
         initMatcher();
         initBookName();
         initChapterAndVerseNumbers();
-        initText();
+        initTexts();
     }
 
     public static List<Verse> convertToVerses(List<String> rawTexts) {
@@ -35,7 +38,7 @@ public class TextParser {
             TextParser parsedText = new TextParser(rawText);
             Verse verse = new Verse(
                     parsedText.bookName, parsedText.chapterNo,
-                    parsedText.verseNo, parsedText.text
+                    parsedText.verseNo, parsedText.texts
             );
             verses.add(verse);
         }
@@ -70,9 +73,24 @@ public class TextParser {
         }
     }
 
-    private void initText() {
+    private void initTexts() {
+        StringTokenizer st = new StringTokenizer(getText());
+        StringBuilder sb = new StringBuilder();
+        while (st.hasMoreElements()) {
+            String nextToken = st.nextToken();
+            if (sb.length() + nextToken.length() >= characterNoLimit) {
+                this.texts.add(sb.toString());
+                sb.setLength(0);
+            }
+            if (sb.length() != 0) sb.append(' ');
+            sb.append(nextToken);
+        }
+        this.texts.add(sb.toString());
+    }
+
+    private String getText() {
         int textStartingIndex = matcher.end();
         if (this.rawInput.charAt(textStartingIndex) == ' ') textStartingIndex++;
-        this.text = this.rawInput.substring(textStartingIndex);
+        return this.rawInput.substring(textStartingIndex);
     }
 }

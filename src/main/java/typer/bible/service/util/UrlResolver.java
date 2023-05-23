@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class UrlResolver {
 
     final static String prefix = "verse/";
-    final static HashMap<BookName, Book> bible = MemoryBibleRepository.getBibleInstance();
+    final static MemoryBibleRepository memoryBibleRepository = new MemoryBibleRepository();
 
     public static String getPrevUrl(BookName bookName) {
         BookName prevBookName = BookOrder.getPrevBookName(bookName);
@@ -20,7 +20,7 @@ public class UrlResolver {
     public static String getPrevUrl(BookName bookName, int chapterNo) {
         if (chapterNo == 1) {
             BookName prevBookName = BookOrder.getPrevBookName(bookName);
-            Book prevBook = bible.get(prevBookName);
+            Book prevBook = memoryBibleRepository.getBook(prevBookName);
             int prevBookNoOfChapters = prevBook.getNoOfChapters();
             return resolveUrl(prevBookName, prevBookNoOfChapters);
         }
@@ -33,7 +33,7 @@ public class UrlResolver {
     }
 
     public static String getNextUrl(BookName bookName, int chapterNo) {
-        Book curBook = bible.get(bookName);
+        Book curBook = memoryBibleRepository.getBook(bookName);
         int prevBookNoOfChapters = curBook.getNoOfChapters();
         if (chapterNo == prevBookNoOfChapters) {
             BookName nextBookName = BookOrder.getNextBookName(bookName);

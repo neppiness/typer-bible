@@ -18,6 +18,7 @@ public class MemoryBibleRepository implements VerseRepository {
     final static HashMap<BookName, Book> bible = new HashMap<>();
 
     public MemoryBibleRepository() {
+        if (!bible.isEmpty()) return;
         try {
             for (BookName bookName : BookName.values())
                 bible.put(bookName, BookGenerator.getBook(bookName));
@@ -46,12 +47,8 @@ public class MemoryBibleRepository implements VerseRepository {
         return book.find(chapterNo, verseNo);
     }
 
-    public static HashMap<BookName, Book> getBibleInstance() {
-        if (bible.isEmpty()) new MemoryBibleRepository();
-        return bible;
-    }
-
-    private Book getBook(BookName bookName) {
+    @Override
+    public Book getBook(BookName bookName) {
         return bible.get(bookName);
     }
 }

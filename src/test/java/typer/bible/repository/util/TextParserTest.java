@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import typer.bible.domain.Book;
 import typer.bible.domain.BookName;
 import typer.bible.domain.Verse;
+import typer.bible.repository.MemoryBibleRepository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class TextParserTest {
 
-    final static HashMap<BookName, Book> bible = new HashMap<>();
+    final static MemoryBibleRepository memoryBibleRepository = new MemoryBibleRepository();
 
     static String normalPatternInput
             = "창29:24 라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라";
@@ -46,7 +46,7 @@ class TextParserTest {
         assertThat(verse.getBookName()).isEqualTo(BookName.GENESIS);
         assertThat(verse.getChapterNo()).isEqualTo(29);
         assertThat(verse.getVerseNo()).isEqualTo(24);
-        assertThat(verse.getText()).isEqualTo("라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라");
+        assertThat(verse.getTexts()).isEqualTo(List.of("라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라"));
     }
 
     @Test
@@ -55,8 +55,9 @@ class TextParserTest {
         assertThat(verse.getBookName()).isEqualTo(BookName.SAMUEL2);
         assertThat(verse.getChapterNo()).isEqualTo(2);
         assertThat(verse.getVerseNo()).isEqualTo(0);
-        assertThat(verse.getText()).isEqualTo("어떤 사람이 다윗에게 말하여 이르되 사울을 장사한 사람은 "
-                + "길르앗 야베스 사람들이니이다 하매");
+        assertThat(verse.getTexts()).isEqualTo(
+                List.of("어떤 사람이 다윗에게 말하여 이르되 사울을 장사한 사람은 길르앗 야베스 사람들이니이다 하매")
+        );
     }
 
     @Test
@@ -66,8 +67,28 @@ class TextParserTest {
         assertThat(verse.getBookName()).isEqualTo(BookName.LUKE);
         assertThat(verse.getChapterNo()).isEqualTo(23);
         assertThat(verse.getVerseNo()).isEqualTo(0);
-        assertThat(verse.getText()).isEqualTo("계명을 <살아나시다(마 28:1-10; 막 16:1-8; 요 20:1-10)> " +
-                "따라 안식일에 쉬더라");
+        assertThat(verse.getTexts()).isEqualTo(List.of(
+                "계명을 <살아나시다(마 28:1-10; 막 16:1-8; 요 20:1-10)> 따라 안식일에", "쉬더라")
+        );
+    }
+
+    @Test
+    void allTextLengthTest() {
+        Verse maxLengthVerse = null;
+        int max = 0;
+        for (BookName bookName : BookName.values()) {
+            Book foundBook = memoryBibleRepository.getBook(bookName);
+            for (Verse verse : foundBook.getAllVerses())
+                for (String text : verse.getTexts()) {
+                    assertThat(text.length()).isLessThanOrEqualTo(TextParser.characterNoLimit);
+                    if (max < text.length()) {
+                        max = text.length();
+                        maxLengthVerse = verse;
+                    }
+                }
+        }
+        if (maxLengthVerse != null)
+            System.out.println(maxLengthVerse.getVerseId());
     }
 
     @Test

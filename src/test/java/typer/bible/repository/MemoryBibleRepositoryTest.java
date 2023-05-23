@@ -73,9 +73,9 @@ class MemoryBibleRepositoryTest {
         List<Verse> convertedVerses = TextParser.convertToVerses(obadiahRawTexts);
         int idx = 0;
         for (Verse verse : convertedVerses) {
-            System.out.println(verse.getText());
+            System.out.println(verse.getTexts());
             Verse generatedVerse = obadiahBookTexts.get(idx++);
-            Assertions.assertThat(verse.getText()).isEqualTo(generatedVerse.getText());
+            Assertions.assertThat(verse.getTexts()).isEqualTo(generatedVerse.getTexts());
         }
     }
 
@@ -85,9 +85,9 @@ class MemoryBibleRepositoryTest {
         List<Verse> convertedVerses = TextParser.convertToVerses(malachiChapter4RawTexts);
         int idx = 0;
         for (Verse verse : convertedVerses) {
-            System.out.println(verse.getText());
+            System.out.println(verse.getTexts());
             Verse generatedVerse = foundMalachiChapter4Verses.get(idx++);
-            Assertions.assertThat(verse.getText()).isEqualTo(generatedVerse.getText());
+            Assertions.assertThat(verse.getTexts()).isEqualTo(generatedVerse.getTexts());
         }
     }
 
@@ -101,6 +101,6 @@ class MemoryBibleRepositoryTest {
         assertThat(foundPsalmsVerse.getBookName()).isEqualTo(directlyConvertedVerse.getBookName());
         assertThat(foundPsalmsVerse.getChapterNo()).isEqualTo(directlyConvertedVerse.getChapterNo());
         assertThat(foundPsalmsVerse.getVerseNo()).isEqualTo(directlyConvertedVerse.getVerseNo());
-        assertThat(foundPsalmsVerse.getText()).isEqualTo(directlyConvertedVerse.getText());
+        assertThat(foundPsalmsVerse.getTexts()).isEqualTo(directlyConvertedVerse.getTexts());
     }
 }

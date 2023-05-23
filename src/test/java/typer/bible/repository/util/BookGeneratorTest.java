@@ -59,7 +59,7 @@ class BookGeneratorTest {
         int idx = 0;
         for (Verse verse : versesFromTest) {
             System.out.println(verse.toString());
-            assertThat(verse.getText()).isEqualTo(textsFromBookGenerator.get(idx++).getText());
+            assertThat(verse.getTexts()).isEqualTo(textsFromBookGenerator.get(idx++).getTexts());
         }
     }
 }
