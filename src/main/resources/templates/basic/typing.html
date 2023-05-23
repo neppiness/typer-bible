@@ -17,7 +17,7 @@
             style="text-decoration:inherit;color:inherit"> TYPER-BIBLE </a> </h1>
   </div>
 
-  <div th:each="verse : ${verses}">
+  <div th:each="verse : ${verses}" style="width:800px">
 
     <h5 class="mb-3" th:if="${verse.verseNo == 0}"
         th:text="${verse.bookName.inKorean} + ' ' + ${verse.chapterNo} + ${verse.chapterUnit}">
@@ -27,20 +27,22 @@
         th:text="${verse.bookName.inKorean} + ' ' + ${verse.chapterNo} + ${verse.chapterUnit} + ' ' + ${verse.verseNo} + '절'">
       00장(편) 형태 출력(절 번호가 0이 아닌 경우) </h5>
 
-    <h6 class="mb-3" th:text="${verse.text}">성경 구절 내용</h6>
     <form action="item.html" method="post">
-      <div>
+      <div class="mb-2">
+        <input id="verseTextLabel" name="verseTextLabel" class="form-control"
+                  placeholder="성경 구절 내용" th:placeholder="${verse.text}"
+                  style="background-color:white;border:none" disabled>
         <input type="text" id="verseText" name="verseText" class="form-control" placeholder="상단에 보이는 구절을 입력하세요">
       </div>
       <hr class="my-4">
     </form>
   </div>
   <div class="row">
-    <div class="col">
+    <div class="col mb-3">
       <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='typing.html'"
               th:onclick="|location.href='@{/{prevUrl}(prevUrl=${prevUrl})}'|" type="button">이전으로</button>
     </div>
-    <div class="col">
+    <div class="col mb-3">
       <button class="w-100 btn btn-primary btn-lg" onclick="location.href='typing.html'"
               th:onclick="|location.href='@{/{nextUrl}(nextUrl=${nextUrl})}'|" type="button">다음으로</button>
     </div>
