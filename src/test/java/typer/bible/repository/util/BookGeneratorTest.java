@@ -3,7 +3,9 @@ package typer.bible.repository.util;
 import org.junit.jupiter.api.Test;
 import typer.bible.domain.Book;
 import typer.bible.domain.BookName;
+import typer.bible.domain.Chapter;
 import typer.bible.domain.Verse;
+import typer.bible.domain.util.VerseDTO;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,13 +55,18 @@ class BookGeneratorTest {
 
     @Test
     void getBookTest() throws IOException {
-        List<Verse> versesFromTest = TextParser.convertToVerses(obadiahRawTexts);
+        List<VerseDTO> versesFromTest = TextParser.convertToVerseDTOs(obadiahRawTexts);
         Book Obadiah = BookGenerator.getBook(BookName.OBADIAH);
-        List<Verse> textsFromBookGenerator = Obadiah.getAllVerses();
+        List<Verse> versesFromBookGenerator = Obadiah.getChapter(1).getVerses();
+
         int idx = 0;
-        for (Verse verse : versesFromTest) {
+        for (VerseDTO verseDTO : versesFromTest) {
+            Verse verse = verseDTO.toVerse();
             System.out.println(verse.toString());
-            assertThat(verse.getTexts()).isEqualTo(textsFromBookGenerator.get(idx++).getTexts());
+            assertThat(verseDTO.getTexts())
+                    .isEqualTo(
+                            versesFromBookGenerator.get(idx++).getTexts()
+                    );
         }
     }
 }

@@ -1,12 +1,15 @@
 package typer.bible.repository.util;
 
 import typer.bible.domain.BookName;
+
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class BookNameResolver {
 
-    static HashMap<String, BookName> map;
-    static String[] abbreviations = new String[]{
+    static HashMap<String, BookName> abbrToBookName;
+    final static String[] abbreviations = new String[]{
             "창", "출", "레", "민", "신",
             "수", "삿", "룻", "삼상", "삼하",
             "왕상", "왕하", "대상", "대하", "스",
@@ -25,14 +28,14 @@ public class BookNameResolver {
     };
 
     public static BookName get(String abbr) {
-        if (map == null) setMap();
-        return map.get(abbr);
+        if (abbrToBookName == null) initMap();
+        return abbrToBookName.get(abbr);
     }
 
-    private static void setMap() {
-        map = new HashMap<>();
+    private static void initMap() {
+        abbrToBookName = new HashMap<>();
         int abbrIdx = 0;
         for (BookName bookName : BookName.values())
-            map.put(abbreviations[abbrIdx++], bookName);
+            abbrToBookName.put(abbreviations[abbrIdx++], bookName);
     }
 }

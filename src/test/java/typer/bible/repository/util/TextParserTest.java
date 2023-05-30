@@ -3,7 +3,9 @@ package typer.bible.repository.util;
 import org.junit.jupiter.api.Test;
 import typer.bible.domain.Book;
 import typer.bible.domain.BookName;
+import typer.bible.domain.Chapter;
 import typer.bible.domain.Verse;
+import typer.bible.domain.util.VerseDTO;
 import typer.bible.repository.MemoryBibleRepository;
 
 import java.util.List;
@@ -14,7 +16,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class TextParserTest {
 
-    final static MemoryBibleRepository memoryBibleRepository = new MemoryBibleRepository();
+    final static MemoryBibleRepository memoryBibleRepository = MemoryBibleRepository.getInstance();
 
     static String normalPatternInput
             = "창29:24 라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라";
@@ -42,58 +44,73 @@ class TextParserTest {
 
     @Test
     void setNormalPatternInputConversionTest() {
-        Verse verse = TextParser.convertToVerses(List.of(normalPatternInput)).get(0);
-        assertThat(verse.getBookName()).isEqualTo(BookName.GENESIS);
-        assertThat(verse.getChapterNo()).isEqualTo(29);
-        assertThat(verse.getVerseNo()).isEqualTo(24);
-        assertThat(verse.getTexts()).isEqualTo(List.of("라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라"));
+        List<VerseDTO> verseDTOS = TextParser.convertToVerseDTOs(List.of(normalPatternInput));
+        VerseDTO verseDTO = verseDTOS.get(0);
+        assertThat(verseDTO.getBookName()).isEqualTo(BookName.GENESIS);
+        assertThat(verseDTO.getChapterNo()).isEqualTo(29);
+        assertThat(verseDTO.getVerseNo()).isEqualTo(24);
+        assertThat(verseDTO.getTexts()).isEqualTo(List.of("라반이 또 그의 여종 실바를 그의 딸 레아에게 시녀로 주었더라"));
     }
 
     @Test
     void altPatternInputConversionTest() {
-        Verse verse = TextParser.convertToVerses(List.of(altPatternInput)).get(0);
-        assertThat(verse.getBookName()).isEqualTo(BookName.SAMUEL2);
-        assertThat(verse.getChapterNo()).isEqualTo(2);
-        assertThat(verse.getVerseNo()).isEqualTo(0);
-        assertThat(verse.getTexts()).isEqualTo(
+        List<VerseDTO> verseDTOS = TextParser.convertToVerseDTOs(List.of(altPatternInput));
+        VerseDTO verseDTO = verseDTOS.get(0);
+        assertThat(verseDTO.getBookName()).isEqualTo(BookName.SAMUEL2);
+        assertThat(verseDTO.getChapterNo()).isEqualTo(2);
+        assertThat(verseDTO.getVerseNo()).isEqualTo(0);
+        assertThat(verseDTO.getTexts()).isEqualTo(
                 List.of("어떤 사람이 다윗에게 말하여 이르되 사울을 장사한 사람은 길르앗 야베스 사람들이니이다 하매")
         );
     }
 
     @Test
     void problematicInputConversionTest() {
-        List<Verse> verses = TextParser.convertToVerses(List.of(problematicInput));
-        Verse verse = verses.get(0);
-        assertThat(verse.getBookName()).isEqualTo(BookName.LUKE);
-        assertThat(verse.getChapterNo()).isEqualTo(23);
-        assertThat(verse.getVerseNo()).isEqualTo(0);
-        assertThat(verse.getTexts()).isEqualTo(List.of(
+        List<VerseDTO> verseDTOS = TextParser.convertToVerseDTOs(List.of(problematicInput));
+        VerseDTO verseDTO = verseDTOS.get(0);
+        assertThat(verseDTO.getBookName()).isEqualTo(BookName.LUKE);
+        assertThat(verseDTO.getChapterNo()).isEqualTo(23);
+        assertThat(verseDTO.getVerseNo()).isEqualTo(0);
+        assertThat(verseDTO.getTexts()).isEqualTo(List.of(
                 "계명을 <살아나시다(마 28:1-10; 막 16:1-8; 요 20:1-10)> 따라 안식일에", "쉬더라")
         );
     }
 
     @Test
     void allTextLengthTest() {
-        Verse maxLengthVerse = null;
-        int max = 0;
+        String maxLengthText = null;
+        int maxLength = 0;
         for (BookName bookName : BookName.values()) {
             Book foundBook = memoryBibleRepository.getBook(bookName);
-            for (Verse verse : foundBook.getAllVerses())
+            String foundText = getLongestText(foundBook);
+            if (maxLengthText == null) maxLengthText = foundText;
+            if (maxLengthText.length() < foundText.length()) maxLengthText = foundText;
+        }
+        if (maxLengthText != null)
+            System.out.println(maxLengthText);
+    }
+
+    String getLongestText(Book book) {
+        int maxChapterNo = book.getNoOfChapters();
+        String maxLengthText = null;
+        int maxLength = 0;
+        for (int no = 1; no <= maxChapterNo; no++) {
+            Chapter chapter = book.getChapter(no);
+            for (Verse verse : chapter.getVerses()) {
                 for (String text : verse.getTexts()) {
                     assertThat(text.length()).isLessThanOrEqualTo(TextParser.characterNoLimit);
-                    if (max < text.length()) {
-                        max = text.length();
-                        maxLengthVerse = verse;
-                    }
+                    if (maxLength >= text.length()) continue;
+                    maxLength = text.length();
+                    maxLengthText = text;
                 }
+            }
         }
-        if (maxLengthVerse != null)
-            System.out.println(maxLengthVerse.getVerseId());
+        return maxLengthText;
     }
 
     @Test
     void invalidInputConversionTest() {
-        assertThatThrownBy(() -> TextParser.convertToVerses(List.of(invalidInput)))
+        assertThatThrownBy(() -> TextParser.convertToVerseDTOs(List.of(invalidInput)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

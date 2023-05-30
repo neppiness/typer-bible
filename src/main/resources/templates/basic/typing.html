@@ -16,15 +16,15 @@
     <h1> <a href="../../static/index.html" th:href="@{/}"
             style="text-decoration:inherit;color:inherit"> TYPER-BIBLE </a> </h1>
   </div>
-  <h4 class="mb-3" th:text="${bookName}"> 경 출력 </h4>
-  <div th:each="verse:${verses}" style="width:800px">
+  <h4 class="mb-3" th:text="${chapterId}"> 책 이름 출력 </h4>
+  <div th:each="verse:${chapter.verses}" style="width:800px">
     <form action="item.html" method="post">
       <div th:each="verseText:${verse.texts}" class="mb-2">
         <input id="verseTextLabel" name="verseTextLabel" class="form-control"
-                  placeholder="성경 구절 내용" th:placeholder="${verseText}"
-                  style="background-color:white;border:none" disabled>
+               th:placeholder="${verseText}" placeholder="성경 구절 내용"
+               style="background-color:white;border:none" disabled>
         <input type="text" id="inputText" name="inputText" class="form-control"
-               th:placeholder="${verse.verseId}" placeholder="상단에 보이는 구절을 입력하세요">
+               th:placeholder="${verse.verseNo} + '절'" placeholder="상단에 보이는 구절을 입력하세요">
       </div>
       <hr class="my-4">
     </form>

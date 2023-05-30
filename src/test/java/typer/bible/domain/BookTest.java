@@ -2,6 +2,7 @@ package typer.bible.domain;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import typer.bible.domain.util.VerseDTO;
 import typer.bible.repository.util.TextParser;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ class BookTest {
                     "하시더냐")
     );
 
-    static List<List<Verse>> chapters;
+    static List<Chapter> chapters;
     static Book book;
 
     @BeforeAll
@@ -37,8 +38,11 @@ class BookTest {
         chapters = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             List<String> rawTextList = List.of(rawTexts.get(i));
-            List<Verse> verses = TextParser.convertToVerses(rawTextList);
-            chapters.add(verses);
+            List<VerseDTO> verseDTOs = TextParser.convertToVerseDTOs(rawTextList);
+            List<Verse> verses = new ArrayList<>();
+            for (VerseDTO verseDTO : verseDTOs)
+                verses.add(verseDTO.toVerse());
+            chapters.add(new Chapter(i + 1, verses));
         }
         book = new Book(BookName.GENESIS, chapters);
     }
@@ -49,35 +53,18 @@ class BookTest {
     }
 
     @Test
-    void findChapterByChapterNoTest() {
+    void getChapterTest() {
         for (int index = 0; index < 3; index++) {
-            List<Verse> foundChapter = book.find(index + 1);
-            Verse verseOfFoundChapter = foundChapter.get(0);
-            assertThat(verseOfFoundChapter.getBookName()).isEqualTo(bookNames.get(index));
-            assertThat(verseOfFoundChapter.getChapterNo()).isEqualTo(chapterNos.get(index));
+            Chapter foundChapter = book.getChapter(index + 1);
+            Verse verseOfFoundChapter = foundChapter.getVerses().get(0);
             assertThat(verseOfFoundChapter.getVerseNo()).isEqualTo(verseNos.get(index));
             assertThat(verseOfFoundChapter.getTexts()).isEqualTo(texts.get(index));
         }
     }
 
     @Test
-    void findChapterByChapterNoAndVerseNoTest() {
-        for (int index = 0; index < 3; index++) {
-            List<Verse> foundChapter = book.find(index + 1, 1);
-            Verse verseOfFoundChapter = foundChapter.get(0);
-            assertThat(verseOfFoundChapter.getBookName()).isEqualTo(bookNames.get(index));
-            assertThat(verseOfFoundChapter.getChapterNo()).isEqualTo(chapterNos.get(index));
-            assertThat(verseOfFoundChapter.getVerseNo()).isEqualTo(verseNos.get(index));
-            assertThat(verseOfFoundChapter.getTexts()).isEqualTo(texts.get(index));
-        }
-    }
-
-    @Test
-    void getAllVersesTest() {
-        List<Verse> allVerses = book.getAllVerses();
-        for (int index = 0; index < 3; index++) {
-            Verse verse = allVerses.get(index);
-            assertThat(verse.getTexts()).isEqualTo(texts.get(index));
-        }
+    void getNoOfChapters() {
+        int noOfChapters = book.getNoOfChapters();
+        assertThat(noOfChapters).isEqualTo(3);
     }
 }

@@ -1,14 +1,15 @@
 package typer.bible.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import typer.bible.domain.BookName;
+import typer.bible.domain.Chapter;
 import typer.bible.domain.Verse;
+import typer.bible.domain.util.VerseDTO;
 import typer.bible.repository.util.TextParser;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class MemoryBibleRepositoryTest {
 
@@ -65,42 +66,29 @@ class MemoryBibleRepositoryTest {
 
     static List<String> psalms23_1 = List.of("시23:1 <다윗의 시> 여호와는 나의 목자시니 내게 부족함이 없으리로다");
 
-    MemoryBibleRepository repo = new MemoryBibleRepository();
+    MemoryBibleRepository repo = MemoryBibleRepository.getInstance();
 
     @Test
     void findBookTexts() {
-        List<Verse> obadiahBookTexts = repo.getVerses(BookName.OBADIAH);
-        List<Verse> convertedVerses = TextParser.convertToVerses(obadiahRawTexts);
+        Chapter obadiahChapterOne = repo.getChapter(BookName.OBADIAH, 1);
+        List<VerseDTO> convertedVerses = TextParser.convertToVerseDTOs(obadiahRawTexts);
         int idx = 0;
-        for (Verse verse : convertedVerses) {
-            System.out.println(verse.getTexts());
-            Verse generatedVerse = obadiahBookTexts.get(idx++);
-            Assertions.assertThat(verse.getTexts()).isEqualTo(generatedVerse.getTexts());
+        for (VerseDTO verseDTO : convertedVerses) {
+            System.out.println(verseDTO.getTexts());
+            Verse generatedVerse = obadiahChapterOne.getVerses().get(idx++);
+            assertThat(verseDTO.getTexts()).isEqualTo(generatedVerse.getTexts());
         }
     }
 
     @Test
     void findChapterTexts() {
-        List<Verse> foundMalachiChapter4Verses = repo.getVerses(BookName.MALACHI, 4);
-        List<Verse> convertedVerses = TextParser.convertToVerses(malachiChapter4RawTexts);
+        Chapter foundMalachiChapter4Verses = repo.getChapter(BookName.MALACHI, 4);
+        List<VerseDTO> convertedVerses = TextParser.convertToVerseDTOs(malachiChapter4RawTexts);
         int idx = 0;
-        for (Verse verse : convertedVerses) {
-            System.out.println(verse.getTexts());
-            Verse generatedVerse = foundMalachiChapter4Verses.get(idx++);
-            Assertions.assertThat(verse.getTexts()).isEqualTo(generatedVerse.getTexts());
+        for (VerseDTO verseDTO : convertedVerses) {
+            System.out.println(verseDTO.getTexts());
+            Verse generatedVerse = foundMalachiChapter4Verses.getVerses().get(idx++);
+            assertThat(verseDTO.getTexts()).isEqualTo(generatedVerse.getTexts());
         }
-    }
-
-    @Test
-    void findVerseText() {
-        List<Verse> foundPsalmsVerses = repo.getVerses(BookName.PSALMS, 23, 1);
-        List<Verse> convertedVerses = TextParser.convertToVerses(psalms23_1);
-        Verse directlyConvertedVerse = convertedVerses.get(0);
-        Verse foundPsalmsVerse = foundPsalmsVerses.get(0);
-        System.out.println(foundPsalmsVerse.toString());
-        assertThat(foundPsalmsVerse.getBookName()).isEqualTo(directlyConvertedVerse.getBookName());
-        assertThat(foundPsalmsVerse.getChapterNo()).isEqualTo(directlyConvertedVerse.getChapterNo());
-        assertThat(foundPsalmsVerse.getVerseNo()).isEqualTo(directlyConvertedVerse.getVerseNo());
-        assertThat(foundPsalmsVerse.getTexts()).isEqualTo(directlyConvertedVerse.getTexts());
     }
 }

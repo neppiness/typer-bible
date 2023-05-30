@@ -1,9 +1,9 @@
 package typer.bible.repository.util;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import typer.bible.domain.BookName;
 
+import static org.assertj.core.api.Assertions.*;
 
 class BookNameResolverTest {
 
@@ -30,7 +30,7 @@ class BookNameResolverTest {
         int index = 0;
         for (BookName bookName : BookName.values()) {
             String abbr = abbreviations[index++];
-            Assertions.assertThat(BookNameResolver.get(abbr)).isEqualTo(bookName);
+            assertThat(BookNameResolver.get(abbr)).isEqualTo(bookName);
             System.out.println(abbr + " -> " + BookNameResolver.get(abbr));
         }
     }

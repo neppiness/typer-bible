@@ -1,7 +1,7 @@
 package typer.bible.repository.util;
 
 import typer.bible.domain.BookName;
-import typer.bible.domain.Verse;
+import typer.bible.domain.util.VerseDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,17 +32,17 @@ public class TextParser {
         initTexts();
     }
 
-    public static List<Verse> convertToVerses(List<String> rawTexts) {
-        List<Verse> verses = new ArrayList<>();
+    public static List<VerseDTO> convertToVerseDTOs(List<String> rawTexts) {
+        List<VerseDTO> verseDTOs = new ArrayList<>();
         for (String rawText : rawTexts) {
             TextParser parsedText = new TextParser(rawText);
-            Verse verse = new Verse(
+            VerseDTO verseDTO = new VerseDTO(
                     parsedText.bookName, parsedText.chapterNo,
                     parsedText.verseNo, parsedText.texts
             );
-            verses.add(verse);
+            verseDTOs.add(verseDTO);
         }
-        return verses;
+        return verseDTOs;
     }
 
     private void initMatcher() {

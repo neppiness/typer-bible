@@ -9,12 +9,12 @@ public class BookOrder {
     static HashMap<BookName, BookName> prevOrder;
     static HashMap<BookName, BookName> nextOrder;
 
-    public static BookName getPrevBookName(BookName bookName) {
+    public static BookName getPrev(BookName bookName) {
         if (prevOrder == null) initPrevOrder();
         return prevOrder.get(bookName);
     }
 
-    public static BookName getNextBookName(BookName bookName) {
+    public static BookName getNext(BookName bookName) {
         if (nextOrder == null) initNextOrder();
         return nextOrder.get(bookName);
     }
