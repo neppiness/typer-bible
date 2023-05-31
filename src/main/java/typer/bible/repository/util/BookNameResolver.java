@@ -2,9 +2,7 @@ package typer.bible.repository.util;
 
 import typer.bible.domain.BookName;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 public class BookNameResolver {
 
