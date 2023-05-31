@@ -9,40 +9,50 @@ import static org.assertj.core.api.Assertions.*;
 
 class VerseDTOTest {
 
-    static VerseDTO daniel_3_8, psalms_150_6;
+    static VerseDTO john_3_16, psalms_146_2;
 
-    static List<String> daniel_3_8_texts
-            = List.of("<다니엘의 세 친구> 그 때에 어떤 갈대아 사람들이 나아와 유다", "사람들을 참소하니라");
-    static List<String> psalms_150_6_texts
-            = List.of("호흡이 있는 자마다 여호와를 찬양할지어다 할렐루야");
+    static List<String> john_3_16_texts = List.of("하나님이 세상을 이처럼 사랑하사", "독생자를 주셨으니",
+            "이는 그를 믿는 자마다", "멸망하지 않고", "영생을 얻게 하려 하심이라");
+    static List<String> psalms_146_2_texts
+            = List.of("나의 생전에 여호와를 찬양하며", "나의 평생에 내 하나님을 찬송하리로다");
 
     @BeforeAll
     static void beforeAll() {
-        daniel_3_8 = new VerseDTO(BookName.DANIEL, 3, 8, daniel_3_8_texts);
-        psalms_150_6 = new VerseDTO(BookName.PSALMS, 150, 6, psalms_150_6_texts);
+        john_3_16 = new VerseDTO(BookName.JOHN, 3, 16, john_3_16_texts);
+        psalms_146_2 = new VerseDTO(BookName.PSALMS, 146, 2, psalms_146_2_texts);
     }
 
     @Test
     void VerseConstructorTest1() {
-        assertThat(daniel_3_8.getBookName()).isEqualTo(BookName.DANIEL);
-        assertThat(daniel_3_8.getChapterNo()).isEqualTo(3);
-        assertThat(daniel_3_8.getVerseNo()).isEqualTo(8);
-        assertThat(daniel_3_8.getTexts())
-                .isEqualTo(daniel_3_8_texts);
+        assertThat(john_3_16.getBookName()).isEqualTo(BookName.JOHN);
+        assertThat(john_3_16.getChapterNo()).isEqualTo(3);
+        assertThat(john_3_16.getVerseNo()).isEqualTo(16);
+        assertThat(john_3_16.getTexts())
+                .isEqualTo(List.of("하나님이 세상을 이처럼 사랑하사", "독생자를 주셨으니",
+                        "이는 그를 믿는 자마다", "멸망하지 않고", "영생을 얻게 하려 하심이라"));
     }
 
     @Test
     void VerseConstructorTest2() {
-        assertThat(psalms_150_6.getBookName()).isEqualTo(BookName.PSALMS);
-        assertThat(psalms_150_6.getChapterNo()).isEqualTo(150);
-        assertThat(psalms_150_6.getVerseNo()).isEqualTo(6);
-        assertThat(psalms_150_6.getTexts())
-                .isEqualTo(List.of("호흡이 있는 자마다 여호와를 찬양할지어다 할렐루야"));
+        assertThat(psalms_146_2.getBookName()).isEqualTo(BookName.PSALMS);
+        assertThat(psalms_146_2.getChapterNo()).isEqualTo(146);
+        assertThat(psalms_146_2.getVerseNo()).isEqualTo(2);
+        assertThat(psalms_146_2.getTexts())
+                .isEqualTo(List.of("나의 생전에 여호와를 찬양하며", "나의 평생에 내 하나님을 찬송하리로다"));
     }
 
     @Test
     void toStringTest1() {
-        System.out.println(daniel_3_8.toString());
-        System.out.println(psalms_150_6.toString());
+        assertThat(john_3_16.toString())
+                .isEqualTo("요한복음 3장 16절: 하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니 이는 그를 " +
+                        "믿는 자마다 멸망하지 않고 영생을 얻게 하려 하심이라");
+        System.out.println(john_3_16.toString());
+    }
+
+    @Test
+    void toStringTest2() {
+        assertThat(psalms_146_2.toString())
+                .isEqualTo("시편 146편 2절: 나의 생전에 여호와를 찬양하며 나의 평생에 내 하나님을 찬송하리로다");
+        System.out.println(psalms_146_2.toString());
     }
 }
