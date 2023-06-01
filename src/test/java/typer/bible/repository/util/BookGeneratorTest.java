@@ -3,7 +3,6 @@ package typer.bible.repository.util;
 import org.junit.jupiter.api.Test;
 import typer.bible.domain.Book;
 import typer.bible.domain.BookName;
-import typer.bible.domain.Chapter;
 import typer.bible.domain.Verse;
 import typer.bible.domain.util.VerseDTO;
 
@@ -63,10 +62,9 @@ class BookGeneratorTest {
         for (VerseDTO verseDTO : versesFromTest) {
             Verse verse = verseDTO.toVerse();
             System.out.println(verse.toString());
-            assertThat(verseDTO.getTexts())
-                    .isEqualTo(
-                            versesFromBookGenerator.get(idx++).getTexts()
-                    );
+            assertThat(verse.getTexts()).isEqualTo(
+                    versesFromBookGenerator.get(idx++).getTexts()
+            );
         }
     }
 }
