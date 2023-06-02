@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
-  <link th:href="@{/css/bootstrap.min.css}"
-        href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/bootstrap.min.css"
+        th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <title th:text="${chapterId} + ' | TYPER-BIBLE'">책 이름, 장 번호 | TYPER-BIBLE</title>
   <style>
  .container {
  max-width: 800px;
@@ -16,7 +17,7 @@
     <h1> <a href="../../static/index.html" th:href="@{/}"
             style="text-decoration:inherit;color:inherit"> TYPER-BIBLE </a> </h1>
   </div>
-  <h4 class="mb-3" th:text="${chapterId}"> 책 이름 출력 </h4>
+  <h4 class="mb-3" th:text="${chapterId}"> 책 이름 및 장 번호 출력 </h4>
   <div th:each="verse:${chapter.verses}" style="width:800px">
     <form action="item.html" method="post">
       <div th:each="verseText:${verse.texts}" class="mb-2">
@@ -32,11 +33,11 @@
   <div class="row">
     <div class="col mb-3">
       <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='typing.html'"
-              th:onclick="|location.href='@{/{prevUrl}(prevUrl=${prevUrl})}'|" type="button">이전으로</button>
+              th:onclick="|location.href='@{/{prevUrl}(prevUrl=${prevUrl})}'|" type="button">← 이전으로</button>
     </div>
     <div class="col mb-3">
       <button class="w-100 btn btn-primary btn-lg" onclick="location.href='typing.html'"
-              th:onclick="|location.href='@{/{nextUrl}(nextUrl=${nextUrl})}'|" type="button">다음으로</button>
+              th:onclick="|location.href='@{/{nextUrl}(nextUrl=${nextUrl})}'|" type="button">다음으로 →</button>
     </div>
   </div>
 </div> <!-- /container -->
