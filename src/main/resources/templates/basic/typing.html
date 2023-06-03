@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <link href="/static/css/bootstrap.min.css"
         th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-  <title th:text="${chapterId} + ' | TYPER-BIBLE'">책 이름, 장 번호 | TYPER-BIBLE</title>
+  <title th:text="${chapterId} + ' | TYPER-BIBLE'"> 책 이름, 장 번호 | TYPER-BIBLE </title>
   <style>
  .container {
  max-width: 800px;
@@ -18,18 +18,25 @@
             style="text-decoration:inherit;color:inherit"> TYPER-BIBLE </a> </h1>
   </div>
   <h4 class="mb-3" th:text="${chapterId}"> 책 이름 및 장 번호 출력 </h4>
+
   <div th:each="verse:${chapter.verses}" style="width:800px">
     <form action="item.html" method="post">
-      <div th:each="verseText:${verse.texts}" class="mb-2">
-        <input id="verseTextLabel" name="verseTextLabel" class="form-control"
+      <div th:each="verseText:${verse.texts}" class="mb-1">
+        <input name="verseTextLabel" class="form-control"
                th:placeholder="${verseText}" placeholder="성경 구절 내용"
-               style="background-color:white;border:none" disabled>
-        <input type="text" id="inputText" name="inputText" class="form-control"
+               style="background-color:white;border:none"
+               data-bs-toggle="collapse" href="#inputText"
+               th:href="'#' + ${verse.verseNo} + '-' + ${verseText.length()} + ${verseText.charAt(0)}"
+               role="button" aria-expanded="false" aria-controls="inputText"
+               disabled>
+        <input type="text" id="inputText" th:id="${verse.verseNo} + '-' + ${verseText.length()} + ${verseText.charAt(0)}"
+               name="inputText" class="collapse form-control"
                th:placeholder="${verse.verseNo} + '절'" placeholder="상단에 보이는 구절을 입력하세요">
       </div>
       <hr class="my-4">
     </form>
   </div>
+
   <div class="row">
     <div class="col mb-3">
       <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='typing.html'"
@@ -41,5 +48,16 @@
     </div>
   </div>
 </div> <!-- /container -->
+<script type="importmap">
+    {
+      "imports": {
+        "@popperjs/core": "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/esm/popper.min.js",
+        "bootstrap": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.esm.min.js"
+      }
+    }
+    </script>
+<script type="module">
+      import * as bootstrap from 'bootstrap'
+    </script>
 </body>
 </html>
