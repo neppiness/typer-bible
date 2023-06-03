@@ -21,15 +21,15 @@
 
   <div th:each="verse:${chapter.verses}" style="width:800px">
     <form action="item.html" method="post">
-      <div th:each="verseText:${verse.texts}" class="mb-1">
+      <div th:each="verseText,iterStat:${verse.texts}" class="mb-1">
         <input name="verseTextLabel" class="form-control"
                th:placeholder="${verseText}" placeholder="성경 구절 내용"
                style="background-color:white;border:none"
                data-bs-toggle="collapse" href="#inputText"
-               th:href="'#' + ${verse.verseNo} + '-' + ${verseText.length()} + ${verseText.charAt(0)}"
+               th:href="'#' + ${verse.verseNo} + '-' + ${iterStat.index}"
                role="button" aria-expanded="false" aria-controls="inputText"
                disabled>
-        <input type="text" id="inputText" th:id="${verse.verseNo} + '-' + ${verseText.length()} + ${verseText.charAt(0)}"
+        <input type="text" id="inputText" th:id="${verse.verseNo} + '-' + ${iterStat.index}"
                name="inputText" class="collapse form-control"
                th:placeholder="${verse.verseNo} + '절'" placeholder="상단에 보이는 구절을 입력하세요">
       </div>
