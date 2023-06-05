@@ -3,6 +3,8 @@ package typer.bible.service;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import typer.bible.domain.Book;
 import typer.bible.domain.BookName;
 import typer.bible.domain.Chapter;
 import typer.bible.domain.Testimony;
@@ -40,18 +42,23 @@ public class VerseController {
     public String getNavigationPageWithQueryParams(
             @RequestParam String bookName,
             @RequestParam int chapterNo) {
-        BookName foundBookName = findBookName(bookName);
-        if (foundBookName == null) return "index";
-        return "redirect:verse/" + foundBookName.toString().toLowerCase() + '/' + chapterNo;
+        return "redirect:verse/" + bookName.toLowerCase() + '/' + chapterNo;
     }
 
     @GetMapping("/{bookNameInString}/{chapterNo}")
     public String getChapter(
             @PathVariable String bookNameInString,
             @PathVariable int chapterNo,
-            Model model) {
+            Model model,
+            RedirectAttributes redirectAttrs) {
         BookName foundBookName = findBookName(bookNameInString);
-        if (foundBookName == null) return "index";
+        try {
+            Book book = memoryBibleRepository.getBook(foundBookName);
+            Chapter foundChapter = book.getChapter(chapterNo);
+            if (foundChapter == null) throw new IllegalArgumentException();
+        } catch(Exception e) {
+            return redirectToNavigator(redirectAttrs);
+        }
         processGetChapter(model, foundBookName, chapterNo);
         return "basic/typing";
     }
@@ -63,5 +70,10 @@ public class VerseController {
         model.addAttribute("chapter", chapter);
         model.addAttribute("prevUrl", UrlResolver.getPrevUrl(bookName, chapterNo));
         model.addAttribute("nextUrl", UrlResolver.getNextUrl(bookName, chapterNo));
+    }
+
+    private String redirectToNavigator(RedirectAttributes redirectAttrs) {
+        redirectAttrs.addFlashAttribute("message", "잘못된 접근입니다.");
+        return "redirect:/verse";
     }
 }
