@@ -16,7 +16,7 @@ public class Book {
     }
 
     public Chapter getChapter(int chapterNo) {
-        if (chapterNo >= chapters.size()) return null;
+        if (chapterNo > chapters.size()) return null;
         return this.chapters.get(chapterNo - 1);
     }
 }
